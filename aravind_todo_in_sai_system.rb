@@ -266,7 +266,35 @@ registered #Some steps related to customer_code
 SPD(Smart Process Delivery/ Sequential & Profile Diagrams)
 Ruby Log file Uploading # Legacy/Distributed
 ruby log file path
+#-------------------------------------------------------------------------------
 
+#----------------------------------------------------------------------
+
+gem 'rails', '3.0.20'
+gem 'aspector', '= 0.13.1'
+
+ruby #1.8.7
+rails #2.3.17, 2.3.18
+aspector #0.13.1
+
+/usr/bin/ruby -v
+config/environment.rb
+/ur/bin/gem list aspector
+#----------------------------------------------------------------------
+cd /var/apps/gics
+ls
+current
+#----------------------------------------------------------------------
+3 Issues from saif:
+1) Aspector apply - has only "method", not "methods"
+2) Thread.current.object_id #Not working for old ruby, aspector versions
+3) How to change/kill last executed line
+   def method_name
+   	a = 5+3
+   	LOGGER.info("------")
+   	#Output should print above line only?, but not logger line
+   	#Logger line should execute, but should not print, bot should not return
+   end
 
 
 
