@@ -266,11 +266,10 @@ registered #Some steps related to customer_code
 SPD(Smart Process Delivery/ Sequential & Profile Diagrams)
 Ruby Log file Uploading # Legacy/Distributed
 ruby log file path
-#-------------------------------------------------------------------------------
+
 
 #----------------------------------------------------------------------
-March 6th 2019:
-	
+
 gem 'rails', '3.0.20'
 gem 'aspector', '= 0.13.1'
 
@@ -298,6 +297,48 @@ current
    end
 
 
+Application error
+Change this error message for exceptions thrown outside of an action (like in Dispatcher setups or broken Ruby code) in public/500.html
+
+
+tail -n 100 log/development.log
+tail -n 100 log/production.log
+
+sudo mv ~
+#------------------------------------------------
+
+/var/apps/gics/current
+
+cat /etc/hosts
+127.0.0.1 ent-pocapnmas24.us.ad.gannett.com ent-pocapnmas24 localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1 localhost localhost.localdomain localhost6 localhost6.localdomain6 172.30.17.94 dev-aca.nmass.gci 
+#------------------------------------------------
+march 7th --> Why ACA application is not working again
+Working:
+https://ent-pocapnmas24/gci-rbac
+
+Not working:
+https://ent-pocapnmas24/gci-rbac/sessions
+#-------------------------
+march 8th changes:
+
+gem install minstrel -v 0.2.20101115170047
+gem 'minstrel', '~> 0.3.0'
+
+gem install minstrel -v 0.2.20101115170047
+gem 'minstrel', '~> 0.2.20101115170047'
+
+
+/usr/bin/ruby -v
+/usr/bin/gem list aspector
+/usr/bin/gem install minstrel -v 0.2.20101115170047
+sudo gem install minstrel -v 0.2.20101115170047
+
+gics application:
+https://ent-pocapnmas24/
+
+aca application:
+https://ent-pocapnmas24:4443/gci-rbac/sessions/new
 
 
 
@@ -313,11 +354,43 @@ current
 
 
 
+require "minstrel"
+
+$LOG = Logger.new('LOG_TEST_GANNETT_demo_march_8.log', 'daily')
+$LOG.formatter = proc do |severity, datetime, progname, msg|
+  "#{msg}\n"
+end
+
+
+main_ascpect.rb #minstrel code+ aspect
+aspectapply_Demo_Test_GANNETT.rb #main_acpect required, Ascpect.new.apply([classname, classname])
+application_controller.rb #required aspectapply_Demo_Test_GANNETT.rb
+
+
+class Aspect 
+	
+	def apply(classList)
+	classList.each { |item|
+    instrument = Minstrel::Instrument.new
+	#p instrument
+	#p item
+	instrument.wrap_classname(item) do |point, klass, method, *args|
+  my_thread_id = Thread.current.object_id
+	if point.to_s == "enter"
+	$LOG.debug{ "#{DateTime.now.strftime('%Q')} :: #{my_thread_id} :: #{klass.name} :: #{method} :: #{point.to_s.sub('enter', 'STARTED')}"}
+	elsif point.to_s == "exit"
+	$LOG.debug{ "#{DateTime.now.strftime('%Q')} :: #{my_thread_id} :: #{klass.name} :: #{method} :: #{point.to_s.sub('exit', 'ENDED')}"}
+	end
+ 
+	end
+}
+	end
+	
+
+ end
 
 
 
+ sudo mv /home/sturimella/sai_con_new/aspectapply_Demo_Test_GANNETT.rb    /var/apps/gics/current
 
-
-
-
-
+ gem install 
