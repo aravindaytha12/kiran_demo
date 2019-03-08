@@ -367,30 +367,33 @@ aspectapply_Demo_Test_GANNETT.rb #main_acpect required, Ascpect.new.apply([class
 application_controller.rb #required aspectapply_Demo_Test_GANNETT.rb
 
 
+#GICS - apache
+sudo /etc/init.d/httpd restart
+
+#ACA - nginx
+sudo /etc/init.d/nginx restart
+
+
+
 class Aspect 
-	
 	def apply(classList)
-	classList.each { |item|
-    instrument = Minstrel::Instrument.new
-	#p instrument
-	#p item
-	instrument.wrap_classname(item) do |point, klass, method, *args|
-  my_thread_id = Thread.current.object_id
-	if point.to_s == "enter"
-	$LOG.debug{ "#{DateTime.now.strftime('%Q')} :: #{my_thread_id} :: #{klass.name} :: #{method} :: #{point.to_s.sub('enter', 'STARTED')}"}
-	elsif point.to_s == "exit"
-	$LOG.debug{ "#{DateTime.now.strftime('%Q')} :: #{my_thread_id} :: #{klass.name} :: #{method} :: #{point.to_s.sub('exit', 'ENDED')}"}
+		classList.each { |item|
+			instrument = Minstrel::Instrument.new
+			#p instrument
+			#p item
+			instrument.wrap(item) do |point, klass, method, *args|
+  			my_thread_id = Thread.current.object_id
+  			if point.to_s == "enter"
+  			 $LOG.debug{ "#{DateTime.now.strftime('%Q')} :: #{my_thread_id} :: #{klass.name} :: #{method} :: #{point.to_s.sub('enter', 'STARTED')}"}
+  			elsif point.to_s == "exit"
+  			 $LOG.debug{ "#{DateTime.now.strftime('%Q')} :: #{my_thread_id} :: #{klass.name} :: #{method} :: #{point.to_s.sub('exit', 'ENDED')}"}
+  			end
+			end
+		}
 	end
- 
-	end
-}
-	end
-	
-
- end
+end
 
 
 
- sudo mv /home/sturimella/sai_con_new/aspectapply_Demo_Test_GANNETT.rb    /var/apps/gics/current
-
- gem install 
+sudo mv /home/sturimella/sai_con_new/aspectapply_Demo_Test_GANNETT.rb    /var/apps/gics/current
+#------------------------------------------
